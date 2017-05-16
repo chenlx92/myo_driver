@@ -1,6 +1,9 @@
 # myo_drvier
-This is the myo driver for ROS.
+This is the [Myo armband](https://www.myo.com/)  driver for ROS. The work is based on [myo-raw](https://github.com/dzhu/myo-raw). 
+
 
 ## example
-You will publish the emg data to topic when you run
-`rosrun myo_driver myo_raw.py`
+
+You will setup the myo and publish the emg data to topic when you run
+
+`roslaunch myo_driver myo_pub.launch`
