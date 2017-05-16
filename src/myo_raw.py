@@ -15,8 +15,8 @@ from serial.tools.list_ports import comports
 from common import *
 
 #import numpy as np
-import roslib;roslib.load_manifest('myo_driver')  
 import rospy
+#import roslib;roslib.load_manifest('myo_driver')
 from myo_driver.msg import emg_ch
 
 def multichr(ords):
@@ -444,12 +444,19 @@ if __name__ == '__main__':
         pygame.display.flip()
         last_vals = vals
 
-    m = MyoRaw(sys.argv[1] if len(sys.argv) >= 2 else None)
+    #m = MyoRaw(sys.argv[1] if len(sys.argv) >= 2 else None)
+    #m = MyoRaw()
+    #try {MyoRaw(sys.argv[1] if len(sys.argv) >= 2 else None)} Exception {MyoRaw()}
+
+    try:
+        m = MyoRaw(sys.argv[1] if len(sys.argv) >= 2 else None)
+    except:
+        m = MyoRaw()
     
     # publisher
+    rospy.init_node('myo_node', anonymous=True)
     global pub
     pub = rospy.Publisher('myo_pub', emg_ch, queue_size=10)
-    rospy.init_node('myo_node', anonymous=True)
 
 
     def proc_emg(emg, moving, times=[]):
