@@ -466,14 +466,14 @@ if __name__ == '__main__':
         else:
             print(emg)
             emg_ch_data = emg_ch()
-            emg_ch_data.CH0 = emg[0]
-            emg_ch_data.CH1 = emg[1]
-            emg_ch_data.CH2 = emg[2]
-            emg_ch_data.CH3 = emg[3]
-            emg_ch_data.CH4 = emg[4]
-            emg_ch_data.CH5 = emg[5]
-            emg_ch_data.CH6 = emg[6]
-            emg_ch_data.CH7 = emg[7]            
+            emg_ch_data.ch0 = emg[0]
+            emg_ch_data.ch1 = emg[1]
+            emg_ch_data.ch2 = emg[2]
+            emg_ch_data.ch3 = emg[3]
+            emg_ch_data.ch4 = emg[4]
+            emg_ch_data.ch5 = emg[5]
+            emg_ch_data.ch6 = emg[6]
+            emg_ch_data.ch7 = emg[7]            
             
             global pub
             pub.publish(emg_ch_data)

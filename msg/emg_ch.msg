@@ -1,8 +1,8 @@
-uint32 CH0
-uint32 CH1
-uint32 CH2
-uint32 CH3
-uint32 CH4
-uint32 CH5
-uint32 CH6
-uint32 CH7
+uint32 ch0
+uint32 ch1
+uint32 ch2
+uint32 ch3
+uint32 ch4
+uint32 ch5
+uint32 ch6
+uint32 ch7
