@@ -454,9 +454,9 @@ if __name__ == '__main__':
         m = MyoRaw()
     
     # publisher
-    rospy.init_node('myo_node', anonymous=True)
+    rospy.init_node('myo_raw_node', anonymous=True)
     global pub
-    pub = rospy.Publisher('myo_pub', emg_ch, queue_size=10)
+    pub = rospy.Publisher('myo_raw_pub', emg_ch, queue_size=10)
 
 
     def proc_emg(emg, moving, times=[]):
