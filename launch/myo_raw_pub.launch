@@ -1,0 +1,11 @@
+<launch>
+
+    <!-- setup the myo  -->
+    <!-- <node name="myo_node" pkg="myo_driver" type="myo_raw.py" launch-prefix="xterm -e ipdb" /> -->
+    <node name="myo_node" pkg="myo_driver" type="myo_raw.py" /> 
+    
+    <!-- plot the raw data  -->
+    <node name="ros_plot" pkg="rqt_plot" type="rqt_plot" args="/myo_raw_pub" />
+    
+    
+</launch>
