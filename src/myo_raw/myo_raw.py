@@ -17,6 +17,7 @@ from common import *
 #import numpy as np
 import rospy
 #import roslib;roslib.load_manifest('myo_driver')
+import std_msgs.msg
 from myo_driver.msg import emg_ch
 
 def multichr(ords):
@@ -473,7 +474,9 @@ if __name__ == '__main__':
             emg_ch_data.ch4 = emg[4]
             emg_ch_data.ch5 = emg[5]
             emg_ch_data.ch6 = emg[6]
-            emg_ch_data.ch7 = emg[7]            
+            emg_ch_data.ch7 = emg[7]
+            emg_ch_data.header.stamp = rospy.Time.now()
+            emg_ch_data.header.frame_id = "0"
             
             global pub
             pub.publish(emg_ch_data)
