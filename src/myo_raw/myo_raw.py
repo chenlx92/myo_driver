@@ -467,6 +467,7 @@ if __name__ == '__main__':
         else:
             print(emg)
             emg_ch_data = emg_ch()
+            emg_ch_data.header.stamp = rospy.Time.now()
             emg_ch_data.ch0 = emg[0]
             emg_ch_data.ch1 = emg[1]
             emg_ch_data.ch2 = emg[2]
@@ -475,7 +476,6 @@ if __name__ == '__main__':
             emg_ch_data.ch5 = emg[5]
             emg_ch_data.ch6 = emg[6]
             emg_ch_data.ch7 = emg[7]
-            emg_ch_data.header.stamp = rospy.Time.now()
             emg_ch_data.header.frame_id = "0"
             
             global pub
