@@ -18,7 +18,7 @@ from common import *
 import rospy
 #import roslib;roslib.load_manifest('myo_driver')
 import std_msgs.msg
-from myo_driver.msg import emg_ch
+from myo_driver.msg import emgState
 
 def multichr(ords):
     if sys.version_info[0] >= 3:
@@ -445,10 +445,6 @@ if __name__ == '__main__':
         pygame.display.flip()
         last_vals = vals
 
-    #m = MyoRaw(sys.argv[1] if len(sys.argv) >= 2 else None)
-    #m = MyoRaw()
-    #try {MyoRaw(sys.argv[1] if len(sys.argv) >= 2 else None)} Exception {MyoRaw()}
-
     try:
         m = MyoRaw(sys.argv[1] if len(sys.argv) >= 2 else None)
     except:
@@ -457,7 +453,7 @@ if __name__ == '__main__':
     # publisher
     rospy.init_node('myo_raw_node', anonymous=True)
     global pub
-    pub = rospy.Publisher('myo_raw_pub', emg_ch, queue_size=10)
+    pub = rospy.Publisher('myo_raw_pub', emgState, queue_size=10)
 
 
     def proc_emg(emg, moving, times=[]):
@@ -466,20 +462,20 @@ if __name__ == '__main__':
             plot(scr, [e / 2000. for e in emg])
         else:
             print(emg)
-            emg_ch_data = emg_ch()
-            emg_ch_data.header.stamp = rospy.Time.now()
-            emg_ch_data.ch0 = emg[0]
-            emg_ch_data.ch1 = emg[1]
-            emg_ch_data.ch2 = emg[2]
-            emg_ch_data.ch3 = emg[3]
-            emg_ch_data.ch4 = emg[4]
-            emg_ch_data.ch5 = emg[5]
-            emg_ch_data.ch6 = emg[6]
-            emg_ch_data.ch7 = emg[7]
-            emg_ch_data.header.frame_id = "0"
+            emgState_data = emgState()
+            emgState_data.header.stamp = rospy.Time.now()
+            emgState_data.ch0 = emg[0]
+            emgState_data.ch1 = emg[1]
+            emgState_data.ch2 = emg[2]
+            emgState_data.ch3 = emg[3]
+            emgState_data.ch4 = emg[4]
+            emgState_data.ch5 = emg[5]
+            emgState_data.ch6 = emg[6]
+            emgState_data.ch7 = emg[7]
+            emgState_data.header.frame_id = "0"
             
             global pub
-            pub.publish(emg_ch_data)
+            pub.publish(emgState_data)
 
         ## print framerate of received data
         times.append(time.time())
