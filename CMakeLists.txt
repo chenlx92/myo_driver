@@ -46,7 +46,8 @@ find_package(catkin REQUIRED COMPONENTS rospy message_generation std_msgs)
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-   emgState.msg )
+   emgState.msg
+   imuState.msg)
 
 ## Generate services in the 'srv' folder
 # add_service_files(

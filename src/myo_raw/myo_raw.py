@@ -19,6 +19,7 @@ import rospy
 #import roslib;roslib.load_manifest('myo_driver')
 import std_msgs.msg
 from myo_driver.msg import emgState
+from myo_driver.msg import imuState
 
 def multichr(ords):
     if sys.version_info[0] >= 3:
@@ -452,38 +453,41 @@ if __name__ == '__main__':
     
     # publisher
     rospy.init_node('myo_raw_node', anonymous=True)
-    global pub
-    pub = rospy.Publisher('myo_raw_pub', emgState, queue_size=10)
+    global pub_emg
+    pub_emg = rospy.Publisher('myo_raw_emg_pub', emgState, queue_size=10)
+    global pub_imu
+    pub_imu = rospy.Publisher('myo_raw_imu_pub', imuState, queue_size=10)
 
 
     def proc_emg(emg, moving, times=[]):
-        if HAVE_PYGAME:
-            ## update pygame display
-            plot(scr, [e / 2000. for e in emg])
-        else:
-            print(emg)
-            emgState_data = emgState()
-            emgState_data.header.stamp = rospy.Time.now()
-            emgState_data.ch0 = emg[0]
-            emgState_data.ch1 = emg[1]
-            emgState_data.ch2 = emg[2]
-            emgState_data.ch3 = emg[3]
-            emgState_data.ch4 = emg[4]
-            emgState_data.ch5 = emg[5]
-            emgState_data.ch6 = emg[6]
-            emgState_data.ch7 = emg[7]
-            emgState_data.header.frame_id = "0"
+        rospy.loginfo('emg signals received!')
+        emgState_data = emgState()
+        emgState_data.header.stamp = rospy.Time.now()
+        emgState_data.ch0 = emg[0]
+        emgState_data.ch1 = emg[1]
+        emgState_data.ch2 = emg[2]
+        emgState_data.ch3 = emg[3]
+        emgState_data.ch4 = emg[4]
+        emgState_data.ch5 = emg[5]
+        emgState_data.ch6 = emg[6]
+        emgState_data.ch7 = emg[7]
+        emgState_data.header.frame_id = "0"
+        global pub_emg
+        pub_emg.publish(emgState_data)
             
-            global pub
-            pub.publish(emgState_data)
-
-        ## print framerate of received data
-        times.append(time.time())
-        if len(times) > 20:
-            #print((len(times) - 1) / (times[-1] - times[0]))
-            times.pop(0)
+    def proc_imu(quat, acc, gyro, times=[]):
+        rospy.loginfo('imu signals received!')
+        imuState_data = imuState()
+        imuState_data.header.stamp = rospy.Time.now()
+        imuState_data.quat = quat
+        imuState_data.acc = acc
+        imuState_data.header.frame_id = "0"
+        global pub_imu
+        pub_imu.publish(imuState_data)
+        
 
     m.add_emg_handler(proc_emg)
+    m.add_imu_handler(proc_imu)
     m.connect()
 
     m.add_arm_handler(lambda arm, xdir: print('arm', arm, 'xdir', xdir))
