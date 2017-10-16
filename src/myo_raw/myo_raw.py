@@ -19,7 +19,8 @@ import rospy
 #import roslib;roslib.load_manifest('myo_driver')
 import std_msgs.msg
 from myo_driver.msg import emgState
-from myo_driver.msg import imuState
+from sensor_msgs.msg import Imu
+
 
 def multichr(ords):
     if sys.version_info[0] >= 3:
@@ -456,7 +457,7 @@ if __name__ == '__main__':
     global pub_emg
     pub_emg = rospy.Publisher('myo_raw_emg_pub', emgState, queue_size=10)
     global pub_imu
-    pub_imu = rospy.Publisher('myo_raw_imu_pub', imuState, queue_size=10)
+    pub_imu = rospy.Publisher('myo_raw_imu_pub', Imu, queue_size=10)
 
 
     def proc_emg(emg, moving, times=[]):
@@ -477,14 +478,21 @@ if __name__ == '__main__':
             
     def proc_imu(quat, acc, gyro, times=[]):
         rospy.loginfo('imu signals received!')
-        imuState_data = imuState()
-        imuState_data.header.stamp = rospy.Time.now()
-        imuState_data.quat = quat
-        imuState_data.acc = acc
-        imuState_data.header.frame_id = "0"
+        imuState = Imu()
+        imuState.header.stamp = rospy.Time.now()
+        imuState.header.frame_id = "base"
+        imuState.orientation.w = quat[0]
+        imuState.orientation.x = quat[1]
+        imuState.orientation.y = quat[2]
+        imuState.orientation.z = quat[3]
+        imuState.angular_velocity.x = gyro[0]
+        imuState.angular_velocity.y = gyro[1]
+        imuState.angular_velocity.z = gyro[2]
+        imuState.linear_acceleration.x = acc[0]
+        imuState.linear_acceleration.y = acc[1]
+        imuState.linear_acceleration.z = acc[2]
         global pub_imu
-        pub_imu.publish(imuState_data)
-        
+        pub_imu.publish(imuState)
 
     m.add_emg_handler(proc_emg)
     m.add_imu_handler(proc_imu)
